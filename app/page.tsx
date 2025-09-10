@@ -13,14 +13,14 @@ export default function Home() {
         {/* Description */}
         <p className="mt-6 text-gray-900 text-lg max-w-lg">
           Iysah Yusuf is a mobile engineer driven by visual craft &amp; storytelling.
-          Currently designing at Discord. Previously Google.
+          Currently building at Aman HMO. Previously RepairFind CA.
         </p>
 
         <hr className="my-6 border-gray-200" />
 
         {/* Subtext */}
         <p className="text-gray-400 text-base max-w-xl">
-          My 2025 portfolio is under construction—while that’s happening, you
+          My 2025 portfolio is under construction—while that&apos;s happening, you
           can find me on{" "}
           <a
             href="https://linkedin.com/in/iysahyusuf"
