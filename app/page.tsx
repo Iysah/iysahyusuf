@@ -12,7 +12,7 @@ export default function Home() {
 
         {/* Description */}
         <p className="mt-6 text-gray-900 text-lg max-w-lg">
-          Iysah Yusuf is a designer driven by visual craft &amp; storytelling.
+          Iysah Yusuf is a mobile engineer driven by visual craft &amp; storytelling.
           Currently designing at Discord. Previously Google.
         </p>
 
@@ -23,7 +23,7 @@ export default function Home() {
           My 2025 portfolio is under construction—while that’s happening, you
           can find me on{" "}
           <a
-            href="https://linkedin.com"
+            href="https://linkedin.com/in/iysahyusuf"
             target="_blank"
             className="underline hover:text-gray-600"
           >
@@ -31,10 +31,10 @@ export default function Home() {
           </a>
           , or say{" "}
           <a
-            href="mailto:hello@perryw.ca"
+            href="mailto:hello@iysahyusuf.com"
             className="underline hover:text-gray-600"
           >
-            hello@perryw.ca
+            hello@iysahyusuf.com
           </a>
           .
         </p>
