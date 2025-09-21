@@ -5,14 +5,14 @@ export default function Home() {
     <main className="flex flex-col items-center justify-center min-h-screen bg-gray-50 px-6">
       {/* Logo / Name */}
       <div className="text-center">
-        <h1 className="text-5xl italic font-serif tracking-widest">
+        <h1 className="text-5xl italic font-serif tracking-widest text-gray-900">
           I<span className="mx-2">—</span>Y
           <sup className="text-xs align-super ml-1">©</sup>
         </h1>
 
         {/* Description */}
-        <p className="mt-6 text-gray-900 text-lg max-w-lg">
-          Iysah Yusuf is a mobile engineer driven by visual craft &amp; storytelling.
+        <p className="mt-6 text-gray-900 text-lg max-w-lg font-medium">
+          Iysah Yusuf is a mobile developer driven by mobile innovation &amp; problem-solving.
           Currently building at Aman HMO. Previously RepairFind CA.
         </p>
 

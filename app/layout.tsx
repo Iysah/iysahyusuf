@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "IY - Iysah Yusuf",
-  description: "Iysah Yusuf is a mobile engineer driven by visual craft & storytelling. Currently building at Aman HMO. Previously RepairFind CA.",
+  description: "Iysah Yusuf is a mobile developer driven by mobile innovation & problem-solving. Currently building at Aman HMO. Previously RepairFind CA.",
 };
 
 export default function RootLayout({
