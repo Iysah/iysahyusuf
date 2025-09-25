@@ -18,8 +18,12 @@ export async function uploadToCloudinary(
   try {
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('upload_preset', 'portfolio_resources'); // You'll need to create this preset
-    formData.append('folder', folder);
+    formData.append('upload_preset', 'portfolio_resources');
+    
+    // Add folder if specified
+    if (folder) {
+      formData.append('folder', folder);
+    }
 
     const response = await fetch(
       `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/auto/upload`,
@@ -30,7 +34,17 @@ export async function uploadToCloudinary(
     );
 
     if (!response.ok) {
-      throw new Error('Failed to upload to Cloudinary');
+      const errorData = await response.json().catch(() => ({}));
+      console.error('Cloudinary upload error:', errorData);
+      
+      // Provide more specific error messages
+      if (response.status === 400 && errorData.error?.message?.includes('Upload preset')) {
+        throw new Error(
+          'Upload preset "portfolio_resources" not found. Please create this preset in your Cloudinary dashboard or contact your administrator.'
+        );
+      }
+      
+      throw new Error(`Failed to upload to Cloudinary: ${errorData.error?.message || response.statusText}`);
     }
 
     const result = await response.json();

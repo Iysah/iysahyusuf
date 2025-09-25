@@ -6,6 +6,8 @@ import { Resource } from '@/lib/firestore';
 import MediaUpload from './MediaUpload';
 import { Switch } from '@headlessui/react';
 import { clsx } from 'clsx';
+import { Link } from 'lucide-react';
+import { LinkIcon } from '@heroicons/react/24/solid';
 
 interface ResourceFormData {
   title: string;
@@ -52,7 +54,8 @@ export default function ResourceForm({ resource, onSubmit, onCancel, loading }: 
       mediaType: resource?.mediaType || 'image',
       category: resource?.category || 'web',
       tags: resource?.tags?.join(', ') || '',
-      resourceUrl: resource?.resourceUrl || '',
+      resourceUrl: resource?.resourceUrl ? 
+        resource.resourceUrl.replace(/^https?:\/\//, '') : '',
       isPublished: resource?.isPublished ?? true,
       featured: resource?.featured ?? false,
     },
@@ -76,6 +79,9 @@ export default function ResourceForm({ resource, onSubmit, onCancel, loading }: 
       mediaUrl,
       mediaType,
       tags: data.tags.split(',').map(tag => tag.trim()).filter(Boolean),
+      resourceUrl: data.resourceUrl.startsWith('http') 
+        ? data.resourceUrl 
+        : `https://${data.resourceUrl}`,
     };
 
     await onSubmit(formattedData);
@@ -189,26 +195,48 @@ export default function ResourceForm({ resource, onSubmit, onCancel, loading }: 
         <label htmlFor="resourceUrl" className="block text-sm font-medium text-gray-700 mb-2">
           Resource URL *
         </label>
-        <input
-          type="url"
-          id="resourceUrl"
-          {...register('resourceUrl', { 
-            required: 'Resource URL is required',
-            pattern: {
-              value: /^https?:\/\/.+/,
-              message: 'Please enter a valid URL'
-            }
-          })}
-          className={clsx(
-            'w-full px-3 py-2 border rounded-lg shadow-sm text-black',
-            'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
-            errors.resourceUrl ? 'border-red-300' : 'border-gray-300'
-          )}
-          placeholder="https://example.com"
-        />
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <span className="text-gray-500 text-sm">
+              <LinkIcon className="w-4 h-4" />
+            </span>
+          </div>
+          <input
+            type="text"
+            id="resourceUrl"
+            {...register('resourceUrl', { 
+              required: 'Resource URL is required',
+              pattern: {
+                value: /^.+\..+/,
+                message: 'Please enter a valid domain (e.g., example.com)'
+              }
+            })}
+            className={clsx(
+              'w-full pl-10 pr-3 py-2 border rounded-lg shadow-sm text-gray-700',
+              'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
+              errors.resourceUrl ? 'border-red-300' : 'border-gray-300'
+            )}
+            placeholder="example.com"
+            onChange={(e) => {
+              // Remove https:// if user types it
+              let value = e.target.value;
+              if (value.startsWith('https://')) {
+                value = value.substring(8);
+              } else if (value.startsWith('http://')) {
+                value = value.substring(7);
+              }
+              e.target.value = value;
+              // Trigger the form's onChange
+              setValue('resourceUrl', `https://${value}`);
+            }}
+          />
+        </div>
         {errors.resourceUrl && (
           <p className="mt-1 text-sm text-red-600">{errors.resourceUrl.message}</p>
         )}
+        <p className="mt-1 text-sm text-gray-500">
+          The URL will automatically be prefixed with "https://"
+        </p>
       </div>
 
       {/* Toggles */}
