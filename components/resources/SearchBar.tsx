@@ -39,7 +39,7 @@ export default function SearchBar({
       <div
         className={clsx(
           'relative flex items-center',
-          'bg-white border border-gray-200 rounded-lg',
+          'bg-white border border-gray-200 rounded-lg mb-2',
           'transition-all duration-200',
           isFocused 
             ? 'border-gray-400 shadow-lg ring-4 ring-gray-100' 
