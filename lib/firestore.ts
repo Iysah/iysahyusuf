@@ -41,18 +41,25 @@ export async function getPublishedResources(
   lastDoc?: QueryDocumentSnapshot<DocumentData>
 ) {
   try {
-    let q = query(
-      collection(db, RESOURCES_COLLECTION),
-      where('isPublished', '==', true),
-      orderBy('createdAt', 'desc')
-    );
-
+    // Temporary fix: Build query conditionally to avoid composite index requirement
+    // TODO: Create composite indexes for isPublished + createdAt and isPublished + category + createdAt
+    let q;
+    
     if (categoryFilter && categoryFilter !== 'all') {
-      q = query(q, where('category', '==', categoryFilter));
-    }
-
-    if (limitCount) {
-      q = query(q, limit(limitCount));
+      // If category filter is applied, we need a different approach
+      q = query(
+        collection(db, RESOURCES_COLLECTION),
+        where('isPublished', '==', true),
+        where('category', '==', categoryFilter),
+        limit(limitCount * 2) // Get more docs to sort in memory
+      );
+    } else {
+      // For no category filter, we can use orderBy with just isPublished
+      q = query(
+        collection(db, RESOURCES_COLLECTION),
+        where('isPublished', '==', true),
+        limit(limitCount * 2) // Get more docs to sort in memory
+      );
     }
 
     if (lastDoc) {
@@ -85,10 +92,21 @@ export async function getPublishedResources(
       } as Resource);
     });
 
+    // Sort by createdAt in memory as a temporary workaround
+    resources.sort((a, b) => {
+      const aTime = a.createdAt instanceof Date ? a.createdAt.getTime() : a.createdAt.seconds * 1000;
+      const bTime = b.createdAt instanceof Date ? b.createdAt.getTime() : b.createdAt.seconds * 1000;
+      return bTime - aTime; // Descending order
+    });
+
+    // Limit results after sorting
+    const limitedResources = resources.slice(0, limitCount);
+    const hasMore = resources.length > limitCount;
+
     return {
-      resources,
+      resources: limitedResources,
       lastDoc: querySnapshot.docs[querySnapshot.docs.length - 1],
-      hasMore: querySnapshot.docs.length === limitCount
+      hasMore
     };
   } catch (error) {
     console.error('Error fetching resources:', error);
@@ -99,11 +117,12 @@ export async function getPublishedResources(
 // Get featured resources
 export async function getFeaturedResources() {
   try {
+    // Temporary fix: Remove orderBy to avoid composite index requirement
+    // TODO: Create composite index for isPublished + featured + createdAt
     const q = query(
       collection(db, RESOURCES_COLLECTION),
       where('isPublished', '==', true),
       where('featured', '==', true),
-      orderBy('createdAt', 'desc'),
       limit(6)
     );
 
@@ -115,6 +134,13 @@ export async function getFeaturedResources() {
         id: doc.id,
         ...doc.data()
       } as Resource);
+    });
+
+    // Sort by createdAt in memory as a temporary workaround
+    resources.sort((a, b) => {
+      const aTime = a.createdAt instanceof Date ? a.createdAt.getTime() : a.createdAt.seconds * 1000;
+      const bTime = b.createdAt instanceof Date ? b.createdAt.getTime() : b.createdAt.seconds * 1000;
+      return bTime - aTime; // Descending order
     });
 
     return resources;

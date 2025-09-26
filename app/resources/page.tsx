@@ -22,7 +22,7 @@ export default function ResourcesPage() {
   const fetchFeaturedResources = useCallback(async () => {
     try {
       setFeaturedLoading(true);
-      const response = await fetch('/api/resources?featured=true&limit=6');
+      const response = await fetch('/api/resources?featured=true&limit=12');
       if (response.ok) {
         const data = await response.json();
         setFeaturedResources(data.resources || []);
@@ -151,7 +151,7 @@ export default function ResourcesPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
         {/* Results Info */}
         {!loading && (
-          <div className="mb-8">
+          <div className="mb-8 mt-4">
             <p className="text-gray-600">
               {searchQuery ? (
                 <>
