@@ -9,10 +9,11 @@ import {
 // GET /api/resources/[id] - Get a specific resource
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const resource = await getResource(params.id);
+    const { id } = await params;
+    const resource = await getResource(id);
     return NextResponse.json(resource);
   } catch (error) {
     console.error('Error fetching resource:', error);
@@ -26,9 +27,10 @@ export async function GET(
 // PUT /api/resources/[id] - Update a specific resource
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const body = await request.json();
     
     // Validate mediaType if provided
@@ -60,7 +62,7 @@ export async function PUT(
     if (body.isPublished !== undefined) updates.isPublished = body.isPublished;
     if (body.featured !== undefined) updates.featured = body.featured;
 
-    await updateResource(params.id, updates);
+    await updateResource(id, updates);
 
     return NextResponse.json({ message: 'Resource updated successfully' });
   } catch (error) {
@@ -75,10 +77,11 @@ export async function PUT(
 // DELETE /api/resources/[id] - Delete a specific resource
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    await deleteResource(params.id);
+    const { id } = await params;
+    await deleteResource(id);
     return NextResponse.json({ message: 'Resource deleted successfully' });
   } catch (error) {
     console.error('Error deleting resource:', error);
