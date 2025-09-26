@@ -76,13 +76,13 @@ export default function MediaUpload({ value, onChange, onRemove, className }: Me
         </div>
       ) : (
         <CldUploadWidget
-          uploadPreset="ml_default" // You'll need to create this in Cloudinary
+          uploadPreset="portfolio_resources"
           options={{
             multiple: false,
             resourceType: 'auto',
             maxFileSize: 10000000, // 10MB
             sources: ['local', 'url'],
-            folder: 'portfolio-resources',
+            folder: 'portfolio/resources',
           }}
           onSuccess={handleUploadSuccess}
           onError={handleUploadError}
