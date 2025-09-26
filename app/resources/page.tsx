@@ -121,7 +121,7 @@ export default function ResourcesPage() {
       </section>
 
       {/* Featured Resources Section */}
-      {featuredResources.length > 0 && (
+      {/* {featuredResources.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
@@ -138,14 +138,13 @@ export default function ResourcesPage() {
             className="mb-16"
           />
 
-          {/* Divider */}
           <div className="border-t border-gray-200 pt-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
               All Resources
             </h2>
           </div>
         </section>
-      )}
+      )} */}
 
       {/* Main Resources Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
