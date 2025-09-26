@@ -23,7 +23,7 @@ export interface Resource {
   description: string;
   mediaUrl: string;
   mediaType: 'image' | 'video';
-  category: 'web' | 'app' | 'design' | 'development';
+  category: 'web' | 'app' | 'design' | 'development' | 'ai' | 'productivity' | 'business' | 'learning' | 'devops';
   tags: string[];
   resourceUrl: string;
   createdAt: Timestamp;

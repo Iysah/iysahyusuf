@@ -14,6 +14,11 @@ const categories = [
   { id: 'app', label: 'App', icon: '📱' },
   { id: 'design', label: 'Design', icon: '🎨' },
   { id: 'development', label: 'Development', icon: '💻' },
+  { id: 'ai', label: 'AI Tools', icon: '🤖' },
+  { id: 'productivity', label: 'Productivity', icon: '⚡' },
+  { id: 'business', label: 'Business', icon: '💼' },
+  { id: 'learning', label: 'Learning', icon: '📚' },
+  { id: 'devops', label: 'DevOps', icon: '🔧' },
 ];
 
 export default function FilterTabs({ 

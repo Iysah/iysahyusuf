@@ -20,6 +20,11 @@ export default function ResourceCard({ resource, className }: ResourceCardProps)
     app: 'bg-green-100 text-green-800 border-green-200',
     design: 'bg-purple-100 text-purple-800 border-purple-200',
     development: 'bg-orange-100 text-orange-800 border-orange-200',
+    ai: 'bg-pink-100 text-pink-800 border-pink-200',
+    productivity: 'bg-yellow-100 text-yellow-800 border-yellow-200',
+    business: 'bg-red-100 text-red-800 border-red-200',
+    learning: 'bg-green-100 text-green-800 border-green-200',
+    devops: 'bg-blue-100 text-blue-800 border-blue-200',
   };
 
   const handleVideoHover = (playing: boolean) => {
@@ -50,7 +55,7 @@ export default function ResourceCard({ resource, className }: ResourceCardProps)
             {!isVideoPlaying ? (
               <>
                 <Image
-                  src={`${resource.mediaUrl}.jpg`} // Cloudinary video thumbnail
+                  src={`${resource?.mediaUrl}.jpg`} // Cloudinary video thumbnail
                   alt={resource.title}
                   fill
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -64,7 +69,7 @@ export default function ResourceCard({ resource, className }: ResourceCardProps)
               </>
             ) : (
               <video
-                src={resource.mediaUrl}
+                src={resource?.mediaUrl || '/placeholder-video.mp4'}
                 autoPlay
                 muted
                 loop
@@ -96,7 +101,7 @@ export default function ResourceCard({ resource, className }: ResourceCardProps)
           <span
             className={clsx(
               'text-xs font-medium px-2 py-1 rounded-full border backdrop-blur-sm',
-              categoryColors[resource.category]
+              categoryColors[resource?.category]
             )}
           >
             {resource.category}

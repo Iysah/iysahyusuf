@@ -12,7 +12,7 @@ export default function Home() {
 
         {/* Description */}
         <p className="mt-6 text-gray-900 text-lg max-w-lg font-medium">
-          Iysah Yusuf is a mobile developer driven by mobile innovation &amp; problem-solving.
+          Iysah Yusuf is a senior mobile developer driven by mobile innovation &amp; problem-solving.
           Currently building at Aman HMO. Previously RepairFind CA.
         </p>
 
@@ -31,7 +31,7 @@ export default function Home() {
           </a>
           , or say{" "}
           <a
-            href="mailto:hello@iysahyusuf.com"
+            href="mailto:iysahyusuf@gmail.com"
             className="underline hover:text-gray-600"
           >
             hello@iysahyusuf.com

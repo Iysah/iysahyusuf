@@ -14,7 +14,7 @@ interface ResourceFormData {
   description: string;
   mediaUrl: string;
   mediaType: 'image' | 'video';
-  category: 'web' | 'app' | 'design' | 'development';
+  category: 'web' | 'app' | 'design' | 'development' | 'ai' | 'productivity' | 'business' | 'learning' | 'devops';
   tags: string;
   resourceUrl: string;
   isPublished: boolean;
@@ -33,6 +33,11 @@ const categories = [
   { value: 'app', label: 'App' },
   { value: 'design', label: 'Design' },
   { value: 'development', label: 'Development' },
+  { value: 'ai', label: 'AI Tools' },
+  { value: 'productivity', label: 'Productivity' },
+  { value: 'business', label: 'Business' },
+  { value: 'learning', label: 'Learning' },
+  { value: 'devops', label: 'DevOps' },
 ];
 
 export default function ResourceForm({ resource, onSubmit, onCancel, loading }: ResourceFormProps) {
