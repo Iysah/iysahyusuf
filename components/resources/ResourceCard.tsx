@@ -69,7 +69,7 @@ export default function ResourceCard({ resource, className }: ResourceCardProps)
               </>
             ) : (
               <video
-                src={resource?.mediaUrl || '/placeholder-video.mp4'}
+                src={resource?.mediaUrl}
                 autoPlay
                 muted
                 loop
