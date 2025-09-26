@@ -39,6 +39,12 @@ export default function ResourceForm({ resource, onSubmit, onCancel, loading }: 
   const [mediaUrl, setMediaUrl] = useState(resource?.mediaUrl || '');
   const [mediaType, setMediaType] = useState<'image' | 'video'>(resource?.mediaType || 'image');
 
+  // Reset local state when resource prop changes
+  useEffect(() => {
+    setMediaUrl(resource?.mediaUrl || '');
+    setMediaType(resource?.mediaType || 'image');
+  }, [resource]);
+
   const {
     register,
     handleSubmit,
@@ -64,6 +70,7 @@ export default function ResourceForm({ resource, onSubmit, onCancel, loading }: 
   const watchedValues = watch(['isPublished', 'featured']);
 
   useEffect(() => {
+    console.log('ResourceForm: mediaUrl state changed', { mediaUrl, mediaType });
     setValue('mediaUrl', mediaUrl);
     setValue('mediaType', mediaType);
   }, [mediaUrl, mediaType, setValue]);
@@ -88,11 +95,13 @@ export default function ResourceForm({ resource, onSubmit, onCancel, loading }: 
   };
 
   const handleMediaChange = (url: string, type: 'image' | 'video') => {
+    console.log('ResourceForm: Media changed', { url, type });
     setMediaUrl(url);
     setMediaType(type);
   };
 
   const handleMediaRemove = () => {
+    console.log('ResourceForm: Media removed');
     setMediaUrl('');
     setMediaType('image');
   };

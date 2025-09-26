@@ -6,11 +6,14 @@ import ResourceTable from '@/components/admin/ResourceTable';
 import ResourceForm from '@/components/admin/ResourceForm';
 import SearchBar from '@/components/resources/SearchBar';
 import FilterTabs from '@/components/resources/FilterTabs';
+import ProtectedRoute from '@/components/admin/ProtectedRoute';
+import { useAuth } from '@/lib/auth-context';
 import { Dialog } from '@headlessui/react';
 import { PlusIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { clsx } from 'clsx';
 
 export default function AdminResourcesPage() {
+  const { getAuthToken } = useAuth();
   const [resources, setResources] = useState<Resource[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -18,6 +21,15 @@ export default function AdminResourcesPage() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingResource, setEditingResource] = useState<Resource | null>(null);
   const [formLoading, setFormLoading] = useState(false);
+
+  // Helper function to get auth headers
+  const getAuthHeaders = useCallback(async () => {
+    const token = await getAuthToken();
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    };
+  }, [getAuthToken]);
 
   // Fetch resources
   const fetchResources = useCallback(async () => {
@@ -28,17 +40,24 @@ export default function AdminResourcesPage() {
       if (activeCategory !== 'all') params.append('category', activeCategory);
       if (searchQuery) params.append('search', searchQuery);
 
-      const response = await fetch(`/api/resources?${params.toString()}`);
+      const headers = await getAuthHeaders();
+      const response = await fetch(`/api/resources?${params.toString()}`, {
+        headers,
+      });
+      
       if (response.ok) {
         const data = await response.json();
         setResources(data.resources || []);
+      } else if (response.status === 401) {
+        console.error('Authentication failed');
+        // Handle authentication error - could redirect to login
       }
     } catch (error) {
       console.error('Error fetching resources:', error);
     } finally {
       setLoading(false);
     }
-  }, [activeCategory, searchQuery]);
+  }, [activeCategory, searchQuery, getAuthHeaders]);
 
   // Initial load
   useEffect(() => {
@@ -49,12 +68,13 @@ export default function AdminResourcesPage() {
   const handleFormSubmit = async (data: Omit<Resource, 'id' | 'createdAt'>) => {
     try {
       setFormLoading(true);
+      const headers = await getAuthHeaders();
       
       if (editingResource) {
         // Update existing resource
         const response = await fetch(`/api/resources/${editingResource.id}`, {
           method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
+          headers,
           body: JSON.stringify(data),
         });
 
@@ -69,7 +89,7 @@ export default function AdminResourcesPage() {
         // Create new resource
         const response = await fetch('/api/resources', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers,
           body: JSON.stringify(data),
         });
 
@@ -97,8 +117,10 @@ export default function AdminResourcesPage() {
   // Handle delete
   const handleDelete = async (id: string) => {
     try {
+      const headers = await getAuthHeaders();
       const response = await fetch(`/api/resources/${id}`, {
         method: 'DELETE',
+        headers,
       });
 
       if (response.ok) {
@@ -115,9 +137,10 @@ export default function AdminResourcesPage() {
   // Handle toggle published
   const handleTogglePublished = async (id: string, isPublished: boolean) => {
     try {
+      const headers = await getAuthHeaders();
       const response = await fetch(`/api/resources/${id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({ isPublished }),
       });
 
@@ -135,9 +158,10 @@ export default function AdminResourcesPage() {
   // Handle toggle featured
   const handleToggleFeatured = async (id: string, featured: boolean) => {
     try {
+      const headers = await getAuthHeaders();
       const response = await fetch(`/api/resources/${id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({ featured }),
       });
 
@@ -165,7 +189,8 @@ export default function AdminResourcesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <ProtectedRoute>
+      <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -271,6 +296,7 @@ export default function AdminResourcesPage() {
             
             <div className="p-6">
               <ResourceForm
+                key={editingResource?.id || 'new'}
                 resource={editingResource || undefined}
                 onSubmit={handleFormSubmit}
                 onCancel={handleFormClose}
@@ -280,6 +306,7 @@ export default function AdminResourcesPage() {
           </Dialog.Panel>
         </div>
       </Dialog>
-    </div>
+      </div>
+    </ProtectedRoute>
   );
 }

@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { 
   getResource, 
-  updateResource, 
-  deleteResource,
   Resource 
 } from '@/lib/firestore';
+import { 
+  getResourceAdmin,
+  updateResourceAdmin,
+  deleteResourceAdmin
+} from '@/lib/firestore-admin';
+import { verifyAuthToken } from '@/lib/auth-middleware';
 
 // GET /api/resources/[id] - Get a specific resource
 export async function GET(
@@ -30,6 +34,15 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // Verify authentication for updating resources
+    const authResult = await verifyAuthToken(request);
+    if (authResult.error) {
+      return NextResponse.json(
+        { error: authResult.error },
+        { status: authResult.status }
+      );
+    }
+
     const { id } = await params;
     const body = await request.json();
     
@@ -62,7 +75,7 @@ export async function PUT(
     if (body.isPublished !== undefined) updates.isPublished = body.isPublished;
     if (body.featured !== undefined) updates.featured = body.featured;
 
-    await updateResource(id, updates);
+    await updateResourceAdmin(id, updates);
 
     return NextResponse.json({ message: 'Resource updated successfully' });
   } catch (error) {
@@ -80,8 +93,17 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // Verify authentication for deleting resources
+    const authResult = await verifyAuthToken(request);
+    if (authResult.error) {
+      return NextResponse.json(
+        { error: authResult.error },
+        { status: authResult.status }
+      );
+    }
+
     const { id } = await params;
-    await deleteResource(id);
+    await deleteResourceAdmin(id);
     return NextResponse.json({ message: 'Resource deleted successfully' });
   } catch (error) {
     console.error('Error deleting resource:', error);

@@ -17,13 +17,28 @@ export default function MediaUpload({ value, onChange, onRemove, className }: Me
   const [mediaType, setMediaType] = useState<'image' | 'video' | null>(null);
 
   const handleUploadSuccess = (result: any) => {
-    const url = result.secure_url;
-    const resourceType = result.resource_type;
+    console.log('Upload success:', result);
+    
+    // Extract URL from Cloudinary response - prioritize the correct structure
+    const url = result.info?.secure_url || result.url;
+    const resourceType = result.info?.resource_type || result.resource_type || 'image';
     const type = resourceType === 'video' ? 'video' : 'image';
     
+    console.log('Extracted data:', { url, resourceType, type });
+    console.log('Setting media:', { url, type });
+    
+    if (!url) {
+      console.error('No URL found in upload result:', result);
+      console.error('Available result.info keys:', result.info ? Object.keys(result.info) : 'No info object');
+      setUploading(false);
+      return;
+    }
+    
     setMediaType(type);
-    onChange(url, type);
     setUploading(false);
+    
+    // Call onChange after setting local state
+    onChange(url, type);
   };
 
   const handleUploadError = (error: any) => {
@@ -83,9 +98,18 @@ export default function MediaUpload({ value, onChange, onRemove, className }: Me
             maxFileSize: 10000000, // 10MB
             sources: ['local', 'url'],
             folder: 'portfolio/resources',
+            clientAllowedFormats: ['jpg', 'jpeg', 'png', 'gif', 'webp', 'mp4', 'mov', 'avi'],
+            showAdvancedOptions: false,
+            cropping: false,
+            showSkipCropButton: true,
+            theme: 'minimal',
           }}
           onSuccess={handleUploadSuccess}
           onError={handleUploadError}
+          onClose={() => {
+            console.log('Upload widget closed');
+            setUploading(false);
+          }}
         >
           {({ open }) => (
             <button

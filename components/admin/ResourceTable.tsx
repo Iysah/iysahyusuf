@@ -12,7 +12,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { StarIcon as StarIconSolid } from '@heroicons/react/24/solid';
 import { clsx } from 'clsx';
-import { format } from 'date-fns';
+import { formatDateTime } from '@/utils/date';
 
 interface ResourceTableProps {
   resources: Resource[];
@@ -173,12 +173,7 @@ export default function ResourceTable({
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {format(
-                    resource.createdAt instanceof Date 
-                      ? resource.createdAt 
-                      : new Date(resource.createdAt.seconds * 1000), 
-                    'MMM d, yyyy'
-                  )}
+                  {formatDateTime(resource.createdAt)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <div className="flex items-center justify-end space-x-2">

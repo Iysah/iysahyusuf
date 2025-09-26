@@ -1,10 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { 
   getPublishedResources, 
-  getAllResources, 
   createResource,
   Resource 
 } from '@/lib/firestore';
+import { 
+  getAllResourcesAdmin,
+  getPublishedResourcesAdmin,
+  createResourceAdmin
+} from '@/lib/firestore-admin';
+import { verifyAuthToken } from '@/lib/auth-middleware';
 
 // GET /api/resources - Get all published resources with optional filtering
 export async function GET(request: NextRequest) {
@@ -18,8 +23,17 @@ export async function GET(request: NextRequest) {
     let resources;
 
     if (admin) {
-      // For admin, get all resources
-      resources = await getAllResources();
+      // For admin, verify authentication
+      const authResult = await verifyAuthToken(request);
+      if (authResult.error) {
+        return NextResponse.json(
+          { error: authResult.error },
+          { status: authResult.status }
+        );
+      }
+      
+      // Get all resources for authenticated admin
+      resources = await getAllResourcesAdmin();
       return NextResponse.json({ resources });
     } else {
       // For public, get published resources with filtering
@@ -38,6 +52,15 @@ export async function GET(request: NextRequest) {
 // POST /api/resources - Create a new resource
 export async function POST(request: NextRequest) {
   try {
+    // Verify authentication for creating resources
+    const authResult = await verifyAuthToken(request);
+    if (authResult.error) {
+      return NextResponse.json(
+        { error: authResult.error },
+        { status: authResult.status }
+      );
+    }
+
     const body = await request.json();
     
     // Validate required fields
@@ -80,7 +103,7 @@ export async function POST(request: NextRequest) {
       featured: body.featured || false,
     };
 
-    const resourceId = await createResource(resourceData);
+    const resourceId = await createResourceAdmin(resourceData);
 
     return NextResponse.json(
       { id: resourceId, message: 'Resource created successfully' },
