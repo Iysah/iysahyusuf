@@ -83,9 +83,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate category
-    if (!['web', 'app', 'design', 'development'].includes(body.category)) {
+    if (!['web', 'app', 'design', 'development', 'ai', 'productivity', 'business', 'learning', 'devops'].includes(body.category)) {
       return NextResponse.json(
-        { error: 'category must be one of: web, app, design, development' },
+        { error: 'category must be one of: web, app, design, development, ai, productivity, business, learning, devops' },
         { status: 400 }
       );
     }
