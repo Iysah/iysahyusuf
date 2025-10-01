@@ -34,7 +34,23 @@ export async function GET(request: NextRequest) {
       
       // Get all resources for authenticated admin
       resources = await getAllResourcesAdmin();
-      return NextResponse.json({ resources });
+
+      // Apply optional filters for admin view (client requested category/search)
+      let filtered = resources;
+      if (category && category !== 'all') {
+        filtered = filtered.filter(r => r.category === category);
+      }
+      if (search) {
+        const q = search.toLowerCase();
+        filtered = filtered.filter(r => {
+          const titleMatch = r.title?.toLowerCase().includes(q);
+          const descMatch = r.description?.toLowerCase().includes(q);
+          const tagsMatch = Array.isArray(r.tags) && r.tags.some(tag => tag.toLowerCase().includes(q));
+          return !!(titleMatch || descMatch || tagsMatch);
+        });
+      }
+
+      return NextResponse.json({ resources: filtered });
     } else {
       // For public, get published resources with filtering
       const result = await getPublishedResources(category, search, limit);

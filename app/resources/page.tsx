@@ -5,7 +5,7 @@ import { Resource } from '@/lib/firestore';
 import ResourceGrid from '@/components/resources/ResourceGrid';
 import FilterTabs from '@/components/resources/FilterTabs';
 import SearchBar from '@/components/resources/SearchBar';
-import { ChevronDownIcon } from '@heroicons/react/24/outline';
+import { ChevronDownIcon, FunnelIcon } from '@heroicons/react/24/outline';
 import { clsx } from 'clsx';
 
 export default function ResourcesPage() {
@@ -17,6 +17,7 @@ export default function ResourcesPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [hasMore, setHasMore] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
 
   // Fetch featured resources
   const fetchFeaturedResources = useCallback(async () => {
@@ -110,12 +111,28 @@ export default function ResourcesPage() {
               />
             </div>
 
-            {/* Filter Tabs */}
-            <FilterTabs
-              activeCategory={activeCategory}
-              onCategoryChange={handleCategoryChange}
-              className="justify-center"
-            />
+            {/* Mobile Filter Toggle */}
+            <div className="flex items-center justify-center mb-4 lg:hidden">
+              <button
+                onClick={() => setShowFilters(!showFilters)}
+                className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-white bg-gray-700/40 rounded-lg hover:bg-gray-700/60 transition-colors duration-200"
+              >
+                <FunnelIcon className="w-4 h-4" />
+                {showFilters ? 'Hide Filters' : 'Show Filters'}
+              </button>
+            </div>
+
+            {/* Filter Tabs - Collapsible on mobile */}
+            <div className={clsx(
+              'transition-all duration-300 ease-in-out lg:block',
+              showFilters ? 'block' : 'hidden lg:block'
+            )}>
+              <FilterTabs
+                activeCategory={activeCategory}
+                onCategoryChange={handleCategoryChange}
+                className="justify-center"
+              />
+            </div>
           </div>
         </div>
       </section>
