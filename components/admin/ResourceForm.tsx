@@ -8,6 +8,7 @@ import { Switch } from '@headlessui/react';
 import { clsx } from 'clsx';
 import { Link } from 'lucide-react';
 import { LinkIcon } from '@heroicons/react/24/solid';
+import toast from 'react-hot-toast';
 
 interface ResourceFormData {
   title: string;
@@ -82,7 +83,8 @@ export default function ResourceForm({ resource, onSubmit, onCancel, loading }: 
 
   const handleFormSubmit = async (data: ResourceFormData) => {
     if (!mediaUrl) {
-      alert('Please upload media for the resource');
+-     alert('Please upload media for the resource');
++     toast.error('Please upload media for the resource');
       return;
     }
 

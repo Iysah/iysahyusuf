@@ -11,6 +11,7 @@ import { useAuth } from '@/lib/auth-context';
 import { Dialog } from '@headlessui/react';
 import { PlusIcon, XMarkIcon, FunnelIcon } from '@heroicons/react/24/outline';
 import { clsx } from 'clsx';
+import toast from 'react-hot-toast';
 
 export default function AdminResourcesPage() {
   const { getAuthToken } = useAuth();
@@ -83,6 +84,7 @@ export default function AdminResourcesPage() {
           await fetchResources();
           setIsFormOpen(false);
           setEditingResource(null);
++         toast.success('Resource updated successfully');
         } else {
           throw new Error('Failed to update resource');
         }
@@ -97,13 +99,15 @@ export default function AdminResourcesPage() {
         if (response.ok) {
           await fetchResources();
           setIsFormOpen(false);
++         toast.success('Resource created successfully');
         } else {
           throw new Error('Failed to create resource');
         }
       }
     } catch (error) {
       console.error('Error saving resource:', error);
-      alert('Failed to save resource. Please try again.');
+-     alert('Failed to save resource. Please try again.');
++     toast.error('Failed to save resource. Please try again.');
     } finally {
       setFormLoading(false);
     }
@@ -126,12 +130,14 @@ export default function AdminResourcesPage() {
 
       if (response.ok) {
         await fetchResources();
++       toast.success('Resource deleted');
       } else {
         throw new Error('Failed to delete resource');
       }
     } catch (error) {
       console.error('Error deleting resource:', error);
-      alert('Failed to delete resource. Please try again.');
+-     alert('Failed to delete resource. Please try again.');
++     toast.error('Failed to delete resource. Please try again.');
     }
   };
 
@@ -147,12 +153,14 @@ export default function AdminResourcesPage() {
 
       if (response.ok) {
         await fetchResources();
++       toast.success(isPublished ? 'Resource published' : 'Resource unpublished');
       } else {
         throw new Error('Failed to update resource');
       }
     } catch (error) {
       console.error('Error updating resource:', error);
-      alert('Failed to update resource. Please try again.');
+-     alert('Failed to update resource. Please try again.');
++     toast.error('Failed to update resource. Please try again.');
     }
   };
 
@@ -168,12 +176,14 @@ export default function AdminResourcesPage() {
 
       if (response.ok) {
         await fetchResources();
++       toast.success(featured ? 'Marked as featured' : 'Unmarked as featured');
       } else {
         throw new Error('Failed to update resource');
       }
     } catch (error) {
       console.error('Error updating resource:', error);
-      alert('Failed to update resource. Please try again.');
+-     alert('Failed to update resource. Please try again.');
++     toast.error('Failed to update resource. Please try again.');
     }
   };
 
