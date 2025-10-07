@@ -45,6 +45,8 @@ export default function SearchBar({
             ? 'border-gray-400 shadow-lg ring-4 ring-gray-100' 
             : 'hover:border-gray-300'
         )}
+        role="search"
+        aria-label="Resource search"
       >
         {/* Search Icon */}
         <div className="absolute left-3 flex items-center pointer-events-none">
@@ -59,6 +61,7 @@ export default function SearchBar({
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           placeholder={placeholder}
+          aria-label="Search resources"
           className={clsx(
             'w-full pl-10 pr-10 py-3 text-gray-900 placeholder-gray-500',
             'bg-transparent border-0 rounded-lg',
@@ -71,6 +74,7 @@ export default function SearchBar({
         {query && (
           <button
             onClick={handleClear}
+            aria-label="Clear search"
             className={clsx(
               'absolute right-3 flex items-center justify-center',
               'w-6 h-6 text-gray-400 hover:text-gray-600',

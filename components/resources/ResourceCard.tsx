@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import Script from 'next/script';
 import { Resource } from '@/lib/firestore';
 import { ArrowTopRightOnSquareIcon, PlayIcon } from '@heroicons/react/24/outline';
 import { clsx } from 'clsx';
@@ -44,6 +45,18 @@ export default function ResourceCard({ resource, className }: ResourceCardProps)
         className
       )}
     >
+      <Script id={`resource-jsonld-${resource.id}`} type="application/ld+json">
+        {JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'CreativeWork',
+          name: resource.title,
+          description: resource.description,
+          url: resource.resourceUrl,
+          image: resource.mediaType === 'video' ? `${resource.mediaUrl}.jpg` : resource.mediaUrl,
+          keywords: resource.tags?.join(', '),
+          genre: resource.category,
+        })}
+      </Script>
       {/* Media Section */}
       <div className="relative aspect-video bg-gray-100 overflow-hidden">
         {resource.mediaType === 'video' ? (
@@ -56,8 +69,9 @@ export default function ResourceCard({ resource, className }: ResourceCardProps)
               <>
                 <Image
                   src={`${resource?.mediaUrl}.jpg`} // Cloudinary video thumbnail
-                  alt={resource.title}
+                  alt={`${resource.title} video preview thumbnail`}
                   fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
                   onError={() => setImageError(true)}
                 />
@@ -80,8 +94,9 @@ export default function ResourceCard({ resource, className }: ResourceCardProps)
         ) : (
           <Image
             src={imageError ? '/placeholder-image.svg' : resource.mediaUrl}
-            alt={resource.title}
+            alt={`${resource.title} — ${resource.description?.slice(0, 80) || 'resource image'}`}
             fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-cover transition-transform duration-300 group-hover:scale-105"
             onError={() => setImageError(true)}
           />

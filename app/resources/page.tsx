@@ -8,6 +8,21 @@ import SearchBar from '@/components/resources/SearchBar';
 import { ChevronDownIcon, FunnelIcon } from '@heroicons/react/24/outline';
 import { clsx } from 'clsx';
 
+export const metadata = {
+  title: 'Mobile Dev Resources | React Native, Swift, Cross-Platform',
+  description:
+    'Curated resources for mobile app development: React Native, Swift, iOS/Android tools, and cross-platform best practices.',
+  alternates: {
+    canonical: 'https://iysahyusuf.com/resources',
+  },
+  openGraph: {
+    url: 'https://iysahyusuf.com/resources',
+  },
+  twitter: {
+    card: 'summary',
+  },
+};
+
 export default function ResourcesPage() {
   const [resources, setResources] = useState<Resource[]>([]);
   const [featuredResources, setFeaturedResources] = useState<Resource[]>([]);
@@ -46,7 +61,7 @@ export default function ResourcesPage() {
       const params = new URLSearchParams();
       if (activeCategory !== 'all') params.append('category', activeCategory);
       if (searchQuery) params.append('search', searchQuery);
-      params.append('limit', '12');
+      params.append('limit', '6');
 
       const response = await fetch(`/api/resources?${params.toString()}`);
       if (response.ok) {

@@ -1,8 +1,46 @@
 import Image from "next/image";
+import Script from "next/script";
+
+export const metadata = {
+  title: "React Native Developer | iOS/Android Apps – Iysah Yusuf",
+  description:
+    "Showcasing mobile apps built with React Native and Swift. Explore cross-platform projects and contact for iOS/Android development.",
+  alternates: {
+    canonical: "https://iysahyusuf.com/",
+  },
+  openGraph: {
+    url: "https://iysahyusuf.com/",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
+};
 
 export default function Home() {
   return (
     <main className="flex flex-col items-center justify-center min-h-screen bg-gray-50 px-6">
+      <Script
+        id="person-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Person",
+            name: "Iysah Yusuf",
+            url: "https://iysahyusuf.com/",
+            jobTitle: "Mobile App Developer",
+            worksFor: {
+              "@type": "Organization",
+              name: "Aman HMO",
+            },
+            sameAs: [
+              "https://linkedin.com/in/iysahyusuf",
+              "https://github.com/iysahyusuf",
+              "https://twitter.com/iysahyusuf",
+            ],
+          }),
+        }}
+      />
       {/* Logo / Name */}
       <div className="text-center">
         <h1 className="text-5xl italic font-serif tracking-widest text-gray-900">

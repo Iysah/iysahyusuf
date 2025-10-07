@@ -2,11 +2,12 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { Resource } from '@/lib/firestore';
-import ResourceTable from '@/components/admin/ResourceTable';
-import ResourceForm from '@/components/admin/ResourceForm';
+import dynamic from 'next/dynamic';
+const ResourceTable = dynamic(() => import('@/components/admin/ResourceTable'), { ssr: false });
+const ResourceForm = dynamic(() => import('@/components/admin/ResourceForm'), { ssr: false });
 import SearchBar from '@/components/resources/SearchBar';
 import FilterTabs from '@/components/resources/FilterTabs';
-import ProtectedRoute from '@/components/admin/ProtectedRoute';
+const ProtectedRoute = dynamic(() => import('@/components/admin/ProtectedRoute'), { ssr: false });
 import { useAuth } from '@/lib/auth-context';
 import { Dialog } from '@headlessui/react';
 import { PlusIcon, XMarkIcon, FunnelIcon } from '@heroicons/react/24/outline';
