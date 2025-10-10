@@ -31,7 +31,7 @@ export default function Home() {
             jobTitle: "Mobile App Developer",
             worksFor: {
               "@type": "Organization",
-              name: "Aman HMO",
+              name: "MoMo PSB",
             },
             sameAs: [
               "https://linkedin.com/in/iysahyusuf",
@@ -51,7 +51,7 @@ export default function Home() {
         {/* Description */}
         <p className="mt-6 text-gray-900 text-lg max-w-lg font-medium">
           Iysah Yusuf is a senior mobile developer driven by mobile innovation &amp; problem-solving.
-          Currently building at Aman HMO. Previously RepairFind CA.
+          Currently building at MoMo PSB. Previously RepairFind CA.
         </p>
 
         <hr className="my-6 border-gray-200" />
