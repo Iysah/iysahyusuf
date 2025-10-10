@@ -162,3 +162,22 @@ export const getUploadWidgetConfig = (onSuccess: (result: any) => void) => ({
 
 // Export cloud name for client-side usage
 export const CLOUDINARY_CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+
+export function addCloudinaryTransformation(url: string, transformation: string): string {
+  try {
+    if (!url || !url.includes('res.cloudinary.com') || !url.includes('/upload/')) {
+      return url;
+    }
+    const [prefix, rest] = url.split('/upload/');
+    const afterUpload = rest || '';
+    const firstSegment = afterUpload.split('/')[0] || '';
+    const hasTransformation = firstSegment && !firstSegment.startsWith('v');
+    if (hasTransformation) {
+      // Already has a transformation segment; leave as-is to avoid duplication
+      return url;
+    }
+    return `${prefix}/upload/${transformation}/${afterUpload}`;
+  } catch {
+    return url;
+  }
+}

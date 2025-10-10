@@ -6,6 +6,7 @@ import Script from 'next/script';
 import { Resource } from '@/lib/firestore';
 import { ArrowTopRightOnSquareIcon, PlayIcon } from '@heroicons/react/24/outline';
 import { clsx } from 'clsx';
+import { addCloudinaryTransformation } from '@/lib/cloudinary';
 
 interface ResourceCardProps {
   resource: Resource;
@@ -52,7 +53,7 @@ export default function ResourceCard({ resource, className }: ResourceCardProps)
           name: resource.title,
           description: resource.description,
           url: resource.resourceUrl,
-          image: resource.mediaType === 'video' ? `${resource.mediaUrl}.jpg` : resource.mediaUrl,
+          image: resource.mediaType === 'video' ? optimizedVideoThumbSrc : optimizedImageSrc,
           keywords: resource.tags?.join(', '),
           genre: resource.category,
         })}
@@ -68,7 +69,7 @@ export default function ResourceCard({ resource, className }: ResourceCardProps)
             {!isVideoPlaying ? (
               <>
                 <Image
-                  src={`${resource?.mediaUrl}.jpg`} // Cloudinary video thumbnail
+                  src={optimizedVideoThumbSrc}
                   alt={`${resource.title} video preview thumbnail`}
                   fill
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -83,7 +84,7 @@ export default function ResourceCard({ resource, className }: ResourceCardProps)
               </>
             ) : (
               <video
-                src={resource?.mediaUrl}
+                src={optimizedVideoSrc}
                 autoPlay
                 muted
                 loop
@@ -93,7 +94,7 @@ export default function ResourceCard({ resource, className }: ResourceCardProps)
           </div>
         ) : (
           <Image
-            src={imageError ? '/placeholder-image.svg' : resource.mediaUrl}
+            src={imageError ? '/placeholder-image.svg' : optimizedImageSrc}
             alt={`${resource.title} — ${resource.description?.slice(0, 80) || 'resource image'}`}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -175,3 +176,7 @@ export default function ResourceCard({ resource, className }: ResourceCardProps)
     </div>
   );
 }
+
+const optimizedImageSrc = addCloudinaryTransformation(resource.mediaUrl, 'f_auto,q_auto');
+const optimizedVideoThumbSrc = addCloudinaryTransformation(`${resource.mediaUrl}.jpg`, 'f_auto,q_auto');
+const optimizedVideoSrc = addCloudinaryTransformation(resource.mediaUrl, 'q_auto');
