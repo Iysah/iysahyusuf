@@ -8,21 +8,7 @@ import SearchBar from '@/components/resources/SearchBar';
 import { ChevronDownIcon, FunnelIcon } from '@heroicons/react/24/outline';
 import { clsx } from 'clsx';
 
-export const metadata = {
-  title: 'Mobile Dev Resources | React Native, Swift, Cross-Platform',
-  description:
-    'Curated resources for mobile app development: React Native, Swift, iOS/Android tools, and cross-platform best practices.',
-  alternates: {
-    canonical: 'https://iysahyusuf.com/resources',
-  },
-  openGraph: {
-    url: 'https://iysahyusuf.com/resources',
-  },
-  twitter: {
-    card: 'summary',
-  },
-};
-
+// (metadata moved to app/resources/layout.tsx)
 export default function ResourcesPage() {
   const [resources, setResources] = useState<Resource[]>([]);
   const [featuredResources, setFeaturedResources] = useState<Resource[]>([]);
