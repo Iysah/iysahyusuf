@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Roboto, Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const roboto = Roboto({
@@ -72,6 +73,7 @@ export default function RootLayout({
       >
         <a href="#main-content" className="skip-to-content">Skip to content</a>
         {children}
+        <Analytics />
       </body>
     </html>
   );
