@@ -1,9 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { 
-  getPublishedResources, 
-  createResource,
-  Resource 
-} from '@/lib/firestore';
+import type { Resource } from '@/lib/firestore';
 import { 
   getAllResourcesAdmin,
   getPublishedResourcesAdmin,
@@ -52,8 +48,8 @@ export async function GET(request: NextRequest) {
 
       return NextResponse.json({ resources: filtered });
     } else {
-      // For public, get published resources with filtering
-      const result = await getPublishedResources(category, search, limit);
+      // For public, get published resources with filtering using server-side admin SDK
+      const result = await getPublishedResourcesAdmin(category, search, limit);
       return NextResponse.json(result);
     }
   } catch (error) {

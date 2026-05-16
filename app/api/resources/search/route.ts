@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { searchResources } from '@/lib/firestore';
+import { getPublishedResourcesAdmin } from '@/lib/firestore-admin';
 
 // GET /api/resources/search - Search resources
 export async function GET(request: NextRequest) {
@@ -15,7 +15,8 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const resources = await searchResources(query, category);
+    const result = await getPublishedResourcesAdmin(category, query, 100);
+    const resources = result.resources;
 
     return NextResponse.json({ resources, query, category });
   } catch (error) {

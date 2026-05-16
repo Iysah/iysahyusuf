@@ -1,8 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { 
-  getResource, 
-  Resource 
-} from '@/lib/firestore';
+import type { Resource } from '@/lib/firestore';
 import { 
   getResourceAdmin,
   updateResourceAdmin,
@@ -17,7 +14,13 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const resource = await getResource(id);
+    const resource = await getResourceAdmin(id);
+    if (!resource) {
+      return NextResponse.json(
+        { error: 'Resource not found' },
+        { status: 404 }
+      );
+    }
     return NextResponse.json(resource);
   } catch (error) {
     console.error('Error fetching resource:', error);

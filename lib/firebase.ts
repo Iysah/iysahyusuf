@@ -15,14 +15,15 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+// Initialize Firebase only in the browser
+let app: any = null;
+if (typeof window !== 'undefined') {
+  app = initializeApp(firebaseConfig);
+}
 
-// Initialize Firebase services
-export const db = getFirestore(app);
-export const auth = getAuth(app);
-
-// Initialize Analytics only on client side
-export const analytics = typeof window !== 'undefined' ? getAnalytics(app) : null;
+// Initialize Firebase services only on the client
+export const db = app ? getFirestore(app) : null as any;
+export const auth = app ? getAuth(app) : null as any;
+export const analytics = app ? getAnalytics(app) : null;
 
 export default app;
