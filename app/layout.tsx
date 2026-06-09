@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Roboto, Geist_Mono } from "next/font/google";
+import { Roboto, Geist_Mono, Anton } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
@@ -14,45 +14,51 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const anton = Anton({
+  variable: "--font-anton",
+  subsets: ["latin"],
+  weight: "400",
+});
+
 export const metadata: Metadata = {
-  title: "React Native Portfolio | Innovative Mobile Apps – Iysah Yusuf",
+  title: "Iysah Yusuf – CTO at Yawa | Engineering & Product Leader",
   description:
-    "Senior Mobile Developer building high-performance iOS/Android apps using React Native, Swift, and cross-platform tooling. Previously at RepairFind CA, currently at Aman HMO.",
+    "Iysah Yusuf is the CTO of Yawa, building products that scale and leading the teams that ship them. Engineering, product, and technical strategy.",
   keywords: [
-    "mobile app developer",
-    "React Native expert",
-    "iOS Android portfolio",
-    "Swift iOS apps",
-    "cross-platform mobile",
-    "TypeScript",
-    "Mobile Developer",
+    "Iysah Yusuf",
+    "CTO Yawa",
+    "engineering leader",
+    "technical strategy",
+    "product engineering",
+    "software architecture",
+    "startup CTO",
   ],
   alternates: {
     canonical: "https://iysahyusuf.com/",
   },
   openGraph: {
-    title: "React Native Portfolio | Innovative Mobile Apps – Iysah Yusuf",
+    title: "Iysah Yusuf – CTO at Yawa | Engineering & Product Leader",
     description:
-      "Senior Mobile Developer specializing in React Native and Swift. Explore cross-platform iOS/Android apps and case studies.",
+      "Building products that scale and leading the teams that ship them. CTO at Yawa — engineering, product, and technical strategy.",
     url: "https://iysahyusuf.com/",
-    siteName: "Iysah Yusuf – Mobile Developer",
+    siteName: "Iysah Yusuf – CTO at Yawa",
     type: "website",
     images: [
       {
         url: "https://iysahyusuf.com/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Mobile Developer Portfolio – React Native and Swift Projects",
+        alt: "Iysah Yusuf – CTO at Yawa, engineering and product leader",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "React Native Portfolio | Innovative Mobile Apps – Iysah Yusuf",
+    title: "Iysah Yusuf – CTO at Yawa | Engineering & Product Leader",
     description:
-      "Building iOS/Android apps using React Native and Swift. Check out cross-platform projects and contact for collaborations.",
+      "Building products that scale and leading the teams that ship them. CTO at Yawa.",
     images: ["https://iysahyusuf.com/og-image.jpg"],
-    creator: "@iysahyusuf",
+    creator: "@yusufiysah",
   },
   robots: {
     index: true,
@@ -69,7 +75,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${roboto.variable} ${geistMono.variable} antialiased`}
+        className={`${roboto.variable} ${geistMono.variable} ${anton.variable} antialiased`}
       >
         <a href="#main-content" className="skip-to-content">Skip to content</a>
         {children}
