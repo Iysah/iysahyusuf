@@ -115,7 +115,7 @@ export default function Home() {
             {/* Tagline */}
             <div className="max-w-xs">
               <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-accent">
-                CTO @ Yawa · Engineering Leader
+                CTO @ StackHR · Engineering Leader
               </p>
               <p className="text-lg font-medium leading-snug md:text-xl">
                 Building products that scale
@@ -164,12 +164,12 @@ export default function Home() {
                 Resources
               </a>
               <a
-                href="https://yawa.digital"
+                href="https://stackhr.app"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex w-fit items-center gap-1 text-white transition hover:text-accent"
               >
-                Yawa <ArrowUpRight className="h-3.5 w-3.5" />
+                StackHR <ArrowUpRight className="h-3.5 w-3.5" />
               </a>
             </nav>
             <nav className="flex flex-col gap-3" aria-label="Social">
